@@ -1,12 +1,12 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import React from 'react';
-import { useWeather } from '../useWeather';
-import * as weatherApi from '@/services/weatherApi';
-import type { WeatherData } from '@/types/weather';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { renderHook, waitFor } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
+import { useWeather } from "../useWeather";
+import * as weatherApi from "@/services/weatherApi";
+import type { WeatherData } from "@/types/weather";
 
-vi.mock('@/services/weatherApi');
+vi.mock("@/services/weatherApi");
 
 const createWrapper = () => {
   const queryClient = new QueryClient({
@@ -16,40 +16,37 @@ const createWrapper = () => {
       },
     },
   });
-  
+
   const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
-  Wrapper.displayName = 'TestWrapper';
-  
+  Wrapper.displayName = "TestWrapper";
+
   return Wrapper;
 };
 
-describe('useWeather', () => {
+describe("useWeather", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('returns undefined when lat/lon are null', () => {
-    const { result } = renderHook(
-      () => useWeather({ lat: null, lon: null }),
-      { wrapper: createWrapper() },
-    );
+  it("returns undefined when lat/lon are null", () => {
+    const { result } = renderHook(() => useWeather({ lat: null, lon: null }), {
+      wrapper: createWrapper(),
+    });
 
     expect(result.current.data).toBeUndefined();
     expect(result.current.isLoading).toBe(false);
   });
 
-  it('fetches weather data when lat/lon are provided', async () => {
+  it("fetches weather data when lat/lon are provided", async () => {
     const mockWeatherData: WeatherData = {
-      name: 'London',
-      sys: { country: 'GB' },
+      name: "London",
+      sys: { country: "GB" },
       weather: [
         {
-          id: 800,
-          main: 'Clear',
-          description: 'clear sky',
-          icon: '01d',
+          description: "clear sky",
+          icon: "01d",
         },
       ],
       main: {
@@ -66,7 +63,7 @@ describe('useWeather', () => {
       visibility: 10000,
     };
 
-    vi.spyOn(weatherApi, 'fetchWeather').mockResolvedValue(mockWeatherData);
+    vi.spyOn(weatherApi, "fetchWeather").mockResolvedValue(mockWeatherData);
 
     const { result } = renderHook(
       () => useWeather({ lat: 51.5074, lon: -0.1278 }),
@@ -80,9 +77,9 @@ describe('useWeather', () => {
     expect(result.current.data).toEqual(mockWeatherData);
   });
 
-  it('handles errors correctly', async () => {
-    vi.spyOn(weatherApi, 'fetchWeather').mockRejectedValue(
-      new Error('Failed to fetch'),
+  it("handles errors correctly", async () => {
+    vi.spyOn(weatherApi, "fetchWeather").mockRejectedValue(
+      new Error("Failed to fetch"),
     );
 
     const { result } = renderHook(
@@ -97,9 +94,9 @@ describe('useWeather', () => {
     expect(result.current.error).toBeDefined();
   });
 
-  it('uses metric unit by default', async () => {
+  it("uses metric unit by default", async () => {
     const fetchSpy = vi
-      .spyOn(weatherApi, 'fetchWeather')
+      .spyOn(weatherApi, "fetchWeather")
       .mockResolvedValue({} as WeatherData);
 
     renderHook(() => useWeather({ lat: 51.5074, lon: -0.1278 }), {
@@ -115,13 +112,13 @@ describe('useWeather', () => {
     });
   });
 
-  it('uses imperial unit when specified', async () => {
+  it("uses imperial unit when specified", async () => {
     const fetchSpy = vi
-      .spyOn(weatherApi, 'fetchWeather')
+      .spyOn(weatherApi, "fetchWeather")
       .mockResolvedValue({} as WeatherData);
 
     renderHook(
-      () => useWeather({ lat: 51.5074, lon: -0.1278, unit: 'imperial' }),
+      () => useWeather({ lat: 51.5074, lon: -0.1278, unit: "imperial" }),
       { wrapper: createWrapper() },
     );
 
@@ -129,7 +126,7 @@ describe('useWeather', () => {
       expect(fetchSpy).toHaveBeenCalledWith({
         lat: 51.5074,
         lon: -0.1278,
-        unit: 'imperial',
+        unit: "imperial",
       });
     });
   });
