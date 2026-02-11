@@ -15,6 +15,7 @@ export default defineConfig({
         'src/utils/**/*.{ts,tsx}',
         'src/hooks/useTemperatureUnit.ts',
         'src/services/weatherApi.ts',
+        'src/components/**/*.{ts,tsx}',
       ],
       exclude: [
         '**/*.test.ts',
