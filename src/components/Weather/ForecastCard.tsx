@@ -27,7 +27,7 @@ export default function ForecastCard({ data, unit }: ForecastCardProps) {
         },
         {} as Record<string, (typeof data.list)[0]>,
       ),
-    [data.list],
+    [data],
   );
 
   const forecasts = useMemo(
