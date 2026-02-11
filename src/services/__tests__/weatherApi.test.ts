@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { fetchWeather, fetchForecast } from '../weatherApi';
 
 global.fetch = vi.fn();
@@ -16,7 +16,7 @@ describe('weatherApi', () => {
         main: { temp: 15 },
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => mockData,
       });
@@ -26,7 +26,7 @@ describe('weatherApi', () => {
     });
 
     it('uses default metric unit', async () => {
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => ({}),
       });
@@ -39,7 +39,7 @@ describe('weatherApi', () => {
     });
 
     it('uses imperial unit when specified', async () => {
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => ({}),
       });
@@ -52,7 +52,7 @@ describe('weatherApi', () => {
     });
 
     it('throws error when fetch fails', async () => {
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: false,
       });
 
@@ -68,7 +68,7 @@ describe('weatherApi', () => {
         list: [{ dt: 1234567890, main: { temp: 20 } }],
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => mockData,
       });
@@ -78,7 +78,7 @@ describe('weatherApi', () => {
     });
 
     it('throws error when fetch fails', async () => {
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: false,
       });
 
