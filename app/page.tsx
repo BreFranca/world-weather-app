@@ -98,7 +98,7 @@ export default function Home() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <div className="h-[400px] lg:h-[500px]">
+          <div className="h-[350px] lg:h-[500px]">
             <WeatherMap
               center={mapCenter}
               selectedLocation={location}
@@ -118,14 +118,16 @@ export default function Home() {
             {weatherData && <CurrentWeather data={weatherData} unit={unit} />}
             {!location && !weatherLoading && (
               <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-                <Cloud className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                  Select a Location
-                </h3>
-                <p className="text-gray-600">
-                  Click on the map or search for a location to see weather
-                  information
-                </p>
+                <div className="text-center">
+                  <Cloud className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                    Select a Location
+                  </h3>
+                  <p className="text-gray-600">
+                    Click on the map or search for a location to see weather
+                    information
+                  </p>
+                </div>
               </div>
             )}
           </div>
