@@ -34,7 +34,7 @@ export default function CurrentWeather({ data, unit }: CurrentWeatherProps) {
           />
         </div>
 
-        <div className="grid grid-cols-2">
+        <div className="grid lg:grid-cols-2 gap-4 lg:gap-0">
           <div>
             <p className="text-6xl font-bold">
               {getTemperatureDisplay(data.main.temp, unit)}
@@ -44,7 +44,7 @@ export default function CurrentWeather({ data, unit }: CurrentWeatherProps) {
             </p>
           </div>
 
-          <div className="flex flex-col gap-2 text-sm text-muted-foreground text-right">
+          <div className="flex flex-col gap-2 text-sm text-muted-foreground lg:text-right">
             <span>
               Feels like: {getTemperatureDisplay(data.main.feels_like, unit)}
             </span>
@@ -56,7 +56,7 @@ export default function CurrentWeather({ data, unit }: CurrentWeatherProps) {
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid lg:grid-cols-2 gap-4">
           <Card className="bg-muted/50 h-24">
             <CardContent className="flex items-center gap-3 p-4 h-full">
               <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full">
