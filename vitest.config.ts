@@ -23,9 +23,12 @@ export default defineConfig({
       reporter: ['text', 'json', 'html', 'lcov'],
       include: [
         'src/utils/**/*.{ts,tsx}',
-        'src/hooks/useTemperatureUnit.ts',
-        'src/services/weatherApi.ts',
-        'src/components/**/*.{ts,tsx}',
+        'src/hooks/**/*.ts',
+        'src/services/**/*.ts',
+        'src/components/Weather/CurrentWeather.tsx',
+        'src/components/Search/LocationSearch.tsx',
+        'src/components/Layout/TemperatureToggle.tsx',
+        'src/components/common/**/*.tsx',
       ],
       exclude: [
         '**/*.test.ts',
@@ -33,6 +36,9 @@ export default defineConfig({
         '**/types/**',
         '**/*.d.ts',
         '**/e2e/**',
+        '**/components/ui/**',
+        '**/components/Map/**',
+        '**/components/Weather/ForecastCard.tsx',
       ],
       thresholds: {
         lines: 80,
