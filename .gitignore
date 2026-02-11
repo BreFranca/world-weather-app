@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+.nyc_output/
 
 # next.js
 /.next/
@@ -23,6 +24,7 @@
 # misc
 .DS_Store
 *.pem
+Thumbs.db
 
 # debug
 npm-debug.log*
@@ -31,7 +33,9 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env.local
+.env
+.env*.local
+.env.production
 
 # vercel
 .vercel
@@ -40,5 +44,16 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-playwright-report
-test-results
+# playwright
+playwright-report/
+test-results/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Misc
+.turbo
