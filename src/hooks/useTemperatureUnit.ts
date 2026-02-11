@@ -6,8 +6,10 @@ import { TemperatureUnit } from '@/types/weather';
 export const useTemperatureUnit = () => {
   const [unit, setUnit] = useState<TemperatureUnit>(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('temperatureUnit') as TemperatureUnit;
-      return stored || 'metric';
+      const stored = localStorage.getItem('temperatureUnit');
+      if (stored === 'metric' || stored === 'imperial') {
+        return stored as TemperatureUnit;
+      }
     }
     return 'metric';
   });
