@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { useWeather } from '../useWeather';
 import * as weatherApi from '@/services/weatherApi';
+import type { WeatherData } from '@/types/weather';
 
 vi.mock('@/services/weatherApi');
 
@@ -15,9 +16,13 @@ const createWrapper = () => {
       },
     },
   });
-  return ({ children }: { children: React.ReactNode }) => (
+  
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
+  Wrapper.displayName = 'TestWrapper';
+  
+  return Wrapper;
 };
 
 describe('useWeather', () => {
@@ -36,7 +41,7 @@ describe('useWeather', () => {
   });
 
   it('fetches weather data when lat/lon are provided', async () => {
-    const mockWeatherData = {
+    const mockWeatherData: WeatherData = {
       name: 'London',
       sys: { country: 'GB' },
       weather: [
@@ -95,7 +100,7 @@ describe('useWeather', () => {
   it('uses metric unit by default', async () => {
     const fetchSpy = vi
       .spyOn(weatherApi, 'fetchWeather')
-      .mockResolvedValue({} as any);
+      .mockResolvedValue({} as WeatherData);
 
     renderHook(() => useWeather({ lat: 51.5074, lon: -0.1278 }), {
       wrapper: createWrapper(),
@@ -113,7 +118,7 @@ describe('useWeather', () => {
   it('uses imperial unit when specified', async () => {
     const fetchSpy = vi
       .spyOn(weatherApi, 'fetchWeather')
-      .mockResolvedValue({} as any);
+      .mockResolvedValue({} as WeatherData);
 
     renderHook(
       () => useWeather({ lat: 51.5074, lon: -0.1278, unit: 'imperial' }),

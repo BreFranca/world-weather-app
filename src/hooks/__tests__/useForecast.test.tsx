@@ -1,11 +1,12 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import React from 'react';
-import { useForecast } from '../useForecast';
-import * as weatherApi from '@/services/weatherApi';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { renderHook, waitFor } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
+import { useForecast } from "../useForecast";
+import * as weatherApi from "@/services/weatherApi";
+import { ForecastData } from "@/types/weather";
 
-vi.mock('@/services/weatherApi');
+vi.mock("@/services/weatherApi");
 
 const createWrapper = () => {
   const queryClient = new QueryClient({
@@ -15,32 +16,35 @@ const createWrapper = () => {
       },
     },
   });
-  return ({ children }: { children: React.ReactNode }) => (
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
+
+  Wrapper.displayName = "TestWrapper";
+
+  return Wrapper;
 };
 
-describe('useForecast', () => {
+describe("useForecast", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('returns undefined when lat/lon are null', () => {
-    const { result } = renderHook(
-      () => useForecast({ lat: null, lon: null }),
-      { wrapper: createWrapper() },
-    );
+  it("returns undefined when lat/lon are null", () => {
+    const { result } = renderHook(() => useForecast({ lat: null, lon: null }), {
+      wrapper: createWrapper(),
+    });
 
     expect(result.current.data).toBeUndefined();
     expect(result.current.isLoading).toBe(false);
   });
 
-  it('fetches forecast data when lat/lon are provided', async () => {
+  it("fetches forecast data when lat/lon are provided", async () => {
     const mockForecastData = {
       list: [
         {
           dt: 1704067200,
-          dt_txt: '2024-01-01 00:00:00',
+          dt_txt: "2024-01-01 00:00:00",
           main: {
             temp: 15,
             temp_min: 12,
@@ -50,9 +54,9 @@ describe('useForecast', () => {
           weather: [
             {
               id: 800,
-              main: 'Clear',
-              description: 'clear sky',
-              icon: '01d',
+              main: "Clear",
+              description: "clear sky",
+              icon: "01d",
             },
           ],
           wind: {
@@ -62,7 +66,7 @@ describe('useForecast', () => {
       ],
     };
 
-    vi.spyOn(weatherApi, 'fetchForecast').mockResolvedValue(mockForecastData);
+    vi.spyOn(weatherApi, "fetchForecast").mockResolvedValue(mockForecastData);
 
     const { result } = renderHook(
       () => useForecast({ lat: 51.5074, lon: -0.1278 }),
@@ -76,9 +80,9 @@ describe('useForecast', () => {
     expect(result.current.data).toEqual(mockForecastData);
   });
 
-  it('handles errors correctly', async () => {
-    vi.spyOn(weatherApi, 'fetchForecast').mockRejectedValue(
-      new Error('Failed to fetch'),
+  it("handles errors correctly", async () => {
+    vi.spyOn(weatherApi, "fetchForecast").mockRejectedValue(
+      new Error("Failed to fetch"),
     );
 
     const { result } = renderHook(
@@ -93,10 +97,10 @@ describe('useForecast', () => {
     expect(result.current.error).toBeDefined();
   });
 
-  it('uses metric unit by default', async () => {
+  it("uses metric unit by default", async () => {
     const fetchSpy = vi
-      .spyOn(weatherApi, 'fetchForecast')
-      .mockResolvedValue({} as any);
+      .spyOn(weatherApi, "fetchForecast")
+      .mockResolvedValue({} as ForecastData);
 
     renderHook(() => useForecast({ lat: 51.5074, lon: -0.1278 }), {
       wrapper: createWrapper(),
@@ -111,13 +115,13 @@ describe('useForecast', () => {
     });
   });
 
-  it('uses imperial unit when specified', async () => {
+  it("uses imperial unit when specified", async () => {
     const fetchSpy = vi
-      .spyOn(weatherApi, 'fetchForecast')
-      .mockResolvedValue({} as any);
+      .spyOn(weatherApi, "fetchForecast")
+      .mockResolvedValue({} as ForecastData);
 
     renderHook(
-      () => useForecast({ lat: 51.5074, lon: -0.1278, unit: 'imperial' }),
+      () => useForecast({ lat: 51.5074, lon: -0.1278, unit: "imperial" }),
       { wrapper: createWrapper() },
     );
 
@@ -125,7 +129,7 @@ describe('useForecast', () => {
       expect(fetchSpy).toHaveBeenCalledWith({
         lat: 51.5074,
         lon: -0.1278,
-        unit: 'imperial',
+        unit: "imperial",
       });
     });
   });
